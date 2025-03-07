@@ -10,6 +10,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import com.qa.opencart.frameworkexception.FrameworkException;
+
 public class DriverFactory {
 	
 	WebDriver driver;
@@ -32,6 +34,7 @@ public class DriverFactory {
 
 		default:
 			System.out.println("please pass the right browser" + browsername);
+			throw new FrameworkException("DRIVERNOTFOUNDEXCEPTION");
 
 		}
 		driver.manage().deleteAllCookies();

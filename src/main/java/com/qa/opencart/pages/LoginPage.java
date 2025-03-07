@@ -7,13 +7,18 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import com.qa.opencart.utils.AppConstants;
+import com.qa.opencart.utils.ElementUtil;
+
 public class LoginPage {
 
 	private WebDriver driver;
+	private ElementUtil eleUtil;
 
 	// Constructor of page class
 	public LoginPage(WebDriver driver) {
 		this.driver = driver;
+		eleUtil = new ElementUtil(driver);
 	}
 
 	// Private By locators
@@ -27,22 +32,20 @@ public class LoginPage {
 	// public page actions/method
 
 	public String getLoginPageTitle() {
-		String title = driver.getTitle();
-		return title;
+		return eleUtil.waitForTitleContains(AppConstants.LOGIN_PAGE_TITLE_VALUE, AppConstants.SHORT_DEFAULT_VALUE);
 	}
 
 	public String getLoginPageURL() {
-		String url = driver.getCurrentUrl();
-		return url;
+		return eleUtil.waitForURLContains(AppConstants.LOGIN_PAGE_URL_FRACTION_VALUE, AppConstants.SHORT_DEFAULT_VALUE);
 	}
 
 	public boolean isForgotPwdLinkExist() {
-		return driver.findElement(forgotPasswordLink).isDisplayed();
+		return eleUtil.checkElementIsDisplayed(forgotPasswordLink);
 
 	}
 
 	public List<String> getFooterLinksList() {
-		List<WebElement> footerLinkList = driver.findElements(footerLinks);
+		List<WebElement> footerLinkList = eleUtil.waitForElementsPresence(footerLinks, AppConstants.MEDIUM_DEFAULT_VALUE);
 		List<String> footerTextLink = new ArrayList<String>();
 		for (WebElement e : footerLinkList) {
 			String text = e.getText();
@@ -53,7 +56,7 @@ public class LoginPage {
 	}
 
 	public List<String> getH2HeaderList() {
-		List<WebElement> h2WebElement = driver.findElements(h2Headers);
+		List<WebElement> h2WebElement =eleUtil.waitForElementsPresence(h2Headers, AppConstants.MEDIUM_DEFAULT_VALUE);
 		List<String> h2HeaderList = new ArrayList<String>();
 		for (WebElement e : h2WebElement) {
 			String headerName = e.getText();
@@ -64,9 +67,9 @@ public class LoginPage {
 	}
 
 	public AccountsPage doLogin(String username, String pwd) {
-		driver.findElement(emailID).sendKeys(username);
-		driver.findElement(password).sendKeys(pwd);
-		driver.findElement(loginBtn).click();
+		eleUtil.waitForElementVisible(emailID, AppConstants.MEDIUM_DEFAULT_VALUE).sendKeys(username);
+		eleUtil.doSendKeys(password, pwd);
+		eleUtil.clickElementWhenReady(loginBtn, AppConstants.MEDIUM_DEFAULT_VALUE);
 		return new AccountsPage(driver);
 
 	}
