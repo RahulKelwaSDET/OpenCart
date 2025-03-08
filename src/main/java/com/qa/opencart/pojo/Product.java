@@ -3,12 +3,12 @@ package com.qa.opencart.pojo;
 public class Product {
 	private String searchKey;
 	private String productName;
-	private int productImages;
+	private int productImageCount;
 
 	public Product(String searchKey, String productName, int productImages) {
 		this.searchKey = searchKey;
 		this.productName = productName;
-		this.productImages = productImages;
+		this.productImageCount = productImages;
 	}
 
 	public String getSearchKey() {
@@ -27,17 +27,17 @@ public class Product {
 		this.productName = productName;
 	}
 
-	public int getProductImages() {
-		return productImages;
+	public int getProductImageCount() {
+		return productImageCount;
 	}
 
-	public void setProductImages(int productImages) {
-		this.productImages = productImages;
+	public void setProductImageCount(int productImages) {
+		this.productImageCount = productImages;
 	}
 
 	@Override
 	public String toString() {
-		return "Product [searchKey=" + searchKey + ", productName=" + productName + ", productImages=" + productImages
+		return "Product [searchKey=" + searchKey + ", productName=" + productName + ", productImages=" + productImageCount
 				+ "]";
 	}
 

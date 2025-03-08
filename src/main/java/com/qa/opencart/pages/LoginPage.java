@@ -29,6 +29,8 @@ public class LoginPage {
 	private By footerLinks = By.xpath("//footer//a");
 	private By h2Headers = By.xpath("//h2");
 
+	private By registerLink = By.linkText("Register");
+
 	// public page actions/method
 
 	public String getLoginPageTitle() {
@@ -45,7 +47,8 @@ public class LoginPage {
 	}
 
 	public List<String> getFooterLinksList() {
-		List<WebElement> footerLinkList = eleUtil.waitForElementsPresence(footerLinks, AppConstants.MEDIUM_DEFAULT_VALUE);
+		List<WebElement> footerLinkList = eleUtil.waitForElementsPresence(footerLinks,
+				AppConstants.MEDIUM_DEFAULT_VALUE);
 		List<String> footerTextLink = new ArrayList<String>();
 		for (WebElement e : footerLinkList) {
 			String text = e.getText();
@@ -56,13 +59,13 @@ public class LoginPage {
 	}
 
 	public List<String> getH2HeaderList() {
-		List<WebElement> h2WebElement =eleUtil.waitForElementsPresence(h2Headers, AppConstants.MEDIUM_DEFAULT_VALUE);
+		List<WebElement> h2WebElement = eleUtil.waitForElementsPresence(h2Headers, AppConstants.MEDIUM_DEFAULT_VALUE);
 		List<String> h2HeaderList = new ArrayList<String>();
 		for (WebElement e : h2WebElement) {
 			String headerName = e.getText();
 			h2HeaderList.add(headerName);
 		}
-		
+
 		return h2HeaderList;
 	}
 
@@ -72,6 +75,11 @@ public class LoginPage {
 		eleUtil.clickElementWhenReady(loginBtn, AppConstants.MEDIUM_DEFAULT_VALUE);
 		return new AccountsPage(driver);
 
+	}
+
+	public RegisterPage navigateToRegisterPage() {
+		eleUtil.doClick(registerLink);
+		return new RegisterPage(driver);
 	}
 
 }
