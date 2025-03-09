@@ -52,7 +52,7 @@ public class AccountsPage {
 	}
 
 	public ResultsPage doSearch(String searchTerm) {
-		eleUtil.waitForElementVisible(search, AppConstants.MEDIUM_DEFAULT_VALUE);
+		eleUtil.waitForElementVisible(search, AppConstants.LONG_DEFAULT_VALUE);
 		eleUtil.doSendKeys(search, searchTerm);
 		eleUtil.doActionsClick(searchIcon);
 		return new ResultsPage(driver);

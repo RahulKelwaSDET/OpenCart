@@ -27,7 +27,7 @@ public class SearchTest extends BaseTest {
 	public void searchPageTitleTest(String searchKey) {
 		resultsPage = accPage.doSearch(searchKey);
 		String actSearchTitle = resultsPage.getResultsPageTitle(searchKey);
-		// System.out.println(actSearchTitle);
+	
 		Assert.assertEquals(actSearchTitle, "Search - " + searchKey);
 	}
 

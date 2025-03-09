@@ -48,7 +48,7 @@ public class DriverFactory {
 		Properties prop = new Properties();
 		FileInputStream fis = null;
 		try {
-			fis = new FileInputStream("./src/main/resources/config.properties");
+			fis = new FileInputStream("./src/main/resources/config/config.properties");
 		} catch (FileNotFoundException e) {
 
 			e.printStackTrace();

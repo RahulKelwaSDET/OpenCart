@@ -56,7 +56,7 @@ public class ElementUtil {
 
 	public String doElementGetText(By locator) {
 		String eleText = getElement(locator).getText();
-		System.out.println("Element text is ====>" + eleText);
+		//System.out.println("Element text is ====>" + eleText);
 		return eleText;
 	}
 
