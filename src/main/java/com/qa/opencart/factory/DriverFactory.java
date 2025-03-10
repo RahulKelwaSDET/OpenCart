@@ -12,24 +12,34 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.qa.opencart.frameworkexception.FrameworkException;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
+
 public class DriverFactory {
-	
+
 	WebDriver driver;
+
+	private OptionsManager op;
 
 	public WebDriver initDriver(Properties prop) {
 		String browsername = prop.getProperty("browser");
+		op = new OptionsManager(prop);
+		
 		switch (browsername.toLowerCase()) {
-
 		case "chrome":
-			driver = new ChromeDriver();
+			WebDriverManager.chromedriver().setup();
+			driver = new ChromeDriver(op.getChromeOptions());
+
 			break;
 
 		case "firefox":
-			driver = new FirefoxDriver();
+			WebDriverManager.firefoxdriver().setup();
+			driver = new FirefoxDriver(op.getFirefoxOptions());
 			break;
 
 		case "edge":
-			driver = new EdgeDriver();
+
+			WebDriverManager.edgedriver().setup();
+			driver = new EdgeDriver(op.getEdgeOptions());
 			break;
 
 		default:
@@ -46,22 +56,44 @@ public class DriverFactory {
 
 	public Properties getprop() {
 		Properties prop = new Properties();
-		FileInputStream fis = null;
-		try {
-			fis = new FileInputStream("./src/main/resources/config/config.properties");
-		} catch (FileNotFoundException e) {
+		FileInputStream ip = null;
+		String envName = System.getProperty("env");
 
+		try {
+
+			if (envName == null) {
+				ip = new FileInputStream("./src/main/resources/config/qa.config.properties");
+			} else {
+
+				switch (envName.toLowerCase().trim()) {
+				case "qa":
+					ip = new FileInputStream("./src/main/resources/config/qa.config.properties");
+					break;
+				case "dev":
+					ip = new FileInputStream("./src/main/resources/config/dev.config.properties");
+					break;
+
+				case "uat":
+					ip = new FileInputStream("./src/main/resources/config/uat.config.properties");
+					break;
+				default:
+					throw new FrameworkException("INVALIDENVNAME");
+
+				}
+
+			}
+
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		try {
-			prop.load(fis);
-		} catch (IOException e) {
 
+		try {
+			prop.load(ip);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return prop;
-
 	}
-
 
 }
