@@ -19,27 +19,26 @@ public class DriverFactory {
 	WebDriver driver;
 
 	private OptionsManager op;
+	public static ThreadLocal<WebDriver> tlDriver = new ThreadLocal<WebDriver>();
 
 	public WebDriver initDriver(Properties prop) {
 		String browsername = prop.getProperty("browser");
 		op = new OptionsManager(prop);
-		
+
 		switch (browsername.toLowerCase()) {
 		case "chrome":
 			WebDriverManager.chromedriver().setup();
-			driver = new ChromeDriver(op.getChromeOptions());
-
+			tlDriver.set(new ChromeDriver(op.getChromeOptions()));
 			break;
 
 		case "firefox":
 			WebDriverManager.firefoxdriver().setup();
-			driver = new FirefoxDriver(op.getFirefoxOptions());
+			tlDriver.set(new FirefoxDriver(op.getFirefoxOptions()));
 			break;
 
 		case "edge":
-
 			WebDriverManager.edgedriver().setup();
-			driver = new EdgeDriver(op.getEdgeOptions());
+			tlDriver.set(new EdgeDriver(op.getEdgeOptions()));
 			break;
 
 		default:
@@ -47,11 +46,15 @@ public class DriverFactory {
 			throw new FrameworkException("DRIVERNOTFOUNDEXCEPTION");
 
 		}
-		driver.manage().deleteAllCookies();
-		driver.manage().window().maximize();
-		driver.get(prop.getProperty("url"));
-		return driver;
+		getDriver().manage().deleteAllCookies();
+		getDriver().manage().window().maximize();
+		getDriver().get(prop.getProperty("url"));
+		return getDriver();
 
+	}
+
+	public synchronized static WebDriver getDriver() {
+		return tlDriver.get();
 	}
 
 	public Properties getprop() {
