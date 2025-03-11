@@ -53,27 +53,8 @@ jobs:
           echo "Checking test-output directory:"
           ls -la test-output/ || echo "test-output directory not found"
 
-      # Archive ExtentReports
-      - name: Archive Test Reports
-        if: always()
-        run: |
-          if [ -d "test-output" ]; then
-            echo "Archiving test-output..."
-            tar -czf test-output.tar.gz test-output/
-            ls -la test-output.tar.gz
-          else
-            echo "No test-output directory found, skipping archive"
-          fi
-
-      # Upload test artifacts
-      - name: Upload Test Artifacts
-        if: always() && exists('test-output.tar.gz')  # Check file existence using shell
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-reports
-          path: test-output.tar.gz
-          retention-days: 7
-        continue-on-error: true  # Prevent workflow failure if upload step skips
+     
+     
 
     env:
       MAVEN_OPTS: '-Xmx1024m -XX:MaxPermSize=256m'
