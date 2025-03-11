@@ -2,10 +2,16 @@
 
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 
-<suite name="Regression suite" verbose="4" parallel="tests" thread-count="3" >
+<suite name="Regression suite" verbose="4" parallel="tests"
+	thread-count="1">
+
+	<listeners>
+		<listener
+			class-name="com.qa.opencart.listeners.ExtentReportListener"></listener>
+	</listeners>
 
 	<test name="Login Page Test">
-	<parameter  name="browser" value ="chrome" />
+		<parameter name="browser" value="chrome" />
 		<classes>
 			<class name="com.qa.opencart.tests.LoginPageTest"></class>
 		</classes>
@@ -13,17 +19,17 @@
 
 
 	<test name="Accounts Page Test">
-	
-	<parameter  name="browser" value ="FireFox" />
-	
+
+		<parameter name="browser" value="chrome" />
+
 		<classes>
 			<class name="com.qa.opencart.tests.AccountsPageTest"></class>
 		</classes>
 	</test>
 
 
- <test name="ProductInfo Page Test">
- <parameter  name="browser" value ="edge" />
+	<test name="ProductInfo Page Test">
+		<parameter name="browser" value="chrome" />
 		<classes>
 			<class name="com.qa.opencart.tests.ProductInfoPageTest"></class>
 		</classes>
@@ -31,18 +37,14 @@
 
 
 	<test name="Search Page Test">
-	<parameter  name="browser" value ="chrome" />
+		<parameter name="browser" value="chrome" />
 		<classes>
 			<class name="com.qa.opencart.tests.SearchTest"></class>
 		</classes>
 	</test>
 
 
-	<!-- <test name="Register Page Test">
-		<classes>
-			<class name="com.qa.opencart.tests.RegisterPageTest"></class>
-		</classes>
-	</test>  -->
-
+	<!-- <test name="Register Page Test"> <classes> <class name="com.qa.opencart.tests.RegisterPageTest"></class> 
+		</classes> </test> -->
 
 </suite>

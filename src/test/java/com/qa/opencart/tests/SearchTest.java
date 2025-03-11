@@ -23,15 +23,15 @@ public class SearchTest extends BaseTest {
 		Assert.assertTrue(resultsPage.getProductResultsCount() > 0);
 	}
 
-	@Test(dataProvider = "productDataWithSearchKey", dataProviderClass = ProductDataProvider.class)
+	@Test(dataProvider = "productDataWithSearchKey", dataProviderClass = ProductDataProvider.class, invocationCount = 3)
 	public void searchPageTitleTest(String searchKey) {
 		resultsPage = accPage.doSearch(searchKey);
 		String actSearchTitle = resultsPage.getResultsPageTitle(searchKey);
-	
+
 		Assert.assertEquals(actSearchTitle, "Search - " + searchKey);
 	}
 
-	@Test(dataProvider = "productDataWithName", dataProviderClass = ProductDataProvider.class)
+	@Test(dataProvider = "productDataWithName", dataProviderClass = ProductDataProvider.class, invocationCount = 3)
 	public void selectProductTest(String searchKey, String productName) {
 		resultsPage = accPage.doSearch(searchKey);
 		productInfoPage = resultsPage.selectProduct(productName);
@@ -39,7 +39,7 @@ public class SearchTest extends BaseTest {
 		Assert.assertEquals(actProductHeaderName, productName);
 	}
 
-	@Test(dataProvider = "productData", dataProviderClass = ProductDataProvider.class)
+	@Test(dataProvider = "productData", dataProviderClass = ProductDataProvider.class, invocationCount = 3)
 	public void productImagesTest(Product product) {
 		resultsPage = accPage.doSearch(product.getSearchKey());
 		productInfoPage = resultsPage.selectProduct(product.getProductName());
