@@ -37,17 +37,28 @@ jobs:
       - name: Build and Test with Maven
         run: mvn clean install -Denv="qa"
 
+      # Debug: Check test-output directory
+      - name: Debug Test Output
+        if: always()
+        run: |
+          echo "Checking test-output directory:"
+          ls -la test-output/ || echo "test-output directory not found"
+
       # Archive ExtentReports
       - name: Archive Test Reports
-        if: always()  # Run even if tests fail
+        if: always()
         run: |
           if [ -d "test-output" ]; then
+            echo "Archiving test-output..."
             tar -czf test-output.tar.gz test-output/
+            ls -la test-output.tar.gz
+          else
+            echo "No test-output directory found, skipping archive"
           fi
 
       # Upload test artifacts
       - name: Upload Test Artifacts
-        if: always()
+        if: always() && fileExists('test-output.tar.gz')  # Only run if file exists
         uses: actions/upload-artifact@v3
         with:
           name: test-reports
