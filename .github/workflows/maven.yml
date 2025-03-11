@@ -38,7 +38,9 @@ jobs:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-maven-
-
+# Create reports directory
+      - name: Create Reports Directory
+        run: mkdir -p reports
       # Build and run tests with Maven
       - name: Build and Test with Maven
         run: mvn clean install -Denv="qa" -Dwebdriver.chrome.driver=/usr/bin/chromedriver
@@ -52,8 +54,19 @@ jobs:
         run: |
           echo "Checking test-output directory:"
           ls -la test-output/ || echo "test-output directory not found"
-
-     
+# Archive reports folder
+      - name: Archive Reports
+        if: always()
+        run: |
+          if [ "$(ls -A reports)" ]; then
+            echo "Archiving reports..."
+            tar -czf reports.tar.gz reports/
+            ls -la reports.tar.gz
+          else
+            echo "Reports directory is empty, creating empty archive"
+            touch reports/empty.txt  # Ensure something exists to archive
+            tar -czf reports.tar.gz reports/
+          fi
      
 
     env:
