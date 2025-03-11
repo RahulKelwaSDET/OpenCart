@@ -4,10 +4,10 @@ name: CI Pipeline
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   build-and-test:
@@ -22,8 +22,8 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
-          java-version: '8'  # Matches Java 1.8 requirement
-          distribution: 'temurin'  # Eclipse Temurin distribution for JDK
+          java-version: '8'
+          distribution: 'temurin'  # Eclipse Temurin JDK
 
       # Cache Maven dependencies
       - name: Cache Maven dependencies
@@ -33,15 +33,27 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-maven-
 
-      # Run Maven build with specified command
-      - name: Build with Maven
+      # Build and run tests with Maven
+      - name: Build and Test with Maven
         run: mvn clean install -Denv="qa"
 
-      # Optional: Display build output (e.g., for debugging)
-      - name: List target directory
-        run: ls -la target/
-        if: success() || failure()  # Runs even if build fails for debugging
+      # Archive ExtentReports
+      - name: Archive Test Reports
+        if: always()  # Run even if tests fail
+        run: |
+          if [ -d "test-output" ]; then
+            tar -czf test-output.tar.gz test-output/
+          fi
 
-    # Environment variables (optional, adjust if needed)
+      # Upload test artifacts
+      - name: Upload Test Artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-reports
+          path: test-output.tar.gz
+          retention-days: 7
+
+    # Environment variables
     env:
-      MAVEN_OPTS: '-Xmx1024m'  # Optional: Adjust memory settings if needed
+      MAVEN_OPTS: '-Xmx1024m -XX:MaxPermSize=256m'  # Adjust for Java 8 and test execution
