@@ -44,7 +44,6 @@ jobs:
         run: mvn clean install -Denv="qa" -Dwebdriver.chrome.driver=/usr/bin/chromedriver
         env:
           CHROME_BIN: /usr/bin/google-chrome
-          # Pass Chrome options to avoid user-data-dir issue
           CHROME_OPTIONS: "--headless --no-sandbox --disable-dev-shm-usage --remote-allow-origins=* --user-data-dir=/tmp/chrome-user-data-${{ github.run_id }}"
 
       # Debug: Check test-output directory
@@ -68,12 +67,13 @@ jobs:
 
       # Upload test artifacts
       - name: Upload Test Artifacts
-        if: always() && fileExists('test-output.tar.gz')
+        if: always() && exists('test-output.tar.gz')  # Check file existence using shell
         uses: actions/upload-artifact@v3
         with:
           name: test-reports
           path: test-output.tar.gz
           retention-days: 7
+        continue-on-error: true  # Prevent workflow failure if upload step skips
 
     env:
       MAVEN_OPTS: '-Xmx1024m -XX:MaxPermSize=256m'
