@@ -349,7 +349,7 @@ public class ElementUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println(titleFraction + " title value is not present...");
-			return null;
+			return driver.getTitle();
 		}
 	}
 
