@@ -1,1 +1,1 @@
-Use maven command to run the test mvn test -Denv="qa"
+Use maven command to run the test mvn clean install -Denv="qa"
