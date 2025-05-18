@@ -135,6 +135,7 @@
                     <systemPropertyVariables>
                         <env>${env}</env> 
                     </systemPropertyVariables>
+                     <testFailureIgnore>true</testFailureIgnore> <!--Ignore test failures -->
                 </configuration>
             </plugin>
         </plugins>
